@@ -6,7 +6,7 @@ This is simple weather forecast app built with ClojureScript and Reagent.
 
 To get an interactive development environment run:
 
-    clojure -A:fig:build
+    make start
 
 This will auto compile and send all changes to the browser without the
 need to reload. After the compilation process is complete, you will
@@ -18,12 +18,11 @@ and you should see an alert in the browser window.
 
 To clean all compiled files:
 
-    rm -rf target/public
+    make clean
 
 To create a production build run:
 
-	rm -rf target/public
-	clojure -A:fig:min
+	make build
 
 
 ## License
