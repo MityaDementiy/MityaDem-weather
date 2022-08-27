@@ -14,10 +14,15 @@
 (defn get-app-element []
   (gdom/getElement "app"))
 
+(defonce cats-image "https://upload.wikimedia.org/wikipedia/commons/0/0b/Cat_poster_1.jpg")
+
+
 (defn hello-world []
   [:div
    [:h1 (:text @app-state)]
-   [:h3 "Edit this in src/learn_cljs/weather.cljs and watch it change!"]])
+   [:p "This is ClojureScript cats"]
+   [:img {:src cats-image 
+          :width 360}]])
 
 (defn mount [el]
   (rdom/render [hello-world] el))
