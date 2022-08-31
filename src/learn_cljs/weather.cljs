@@ -1,4 +1,4 @@
-(ns ^:figwheel-hooks learn-cljs.weather                    ;; <1>
+(ns ^:figwheel-hooks learn-cljs.weather
   (:require
    [goog.dom :as gdom]
    [reagent.dom :as rdom]
