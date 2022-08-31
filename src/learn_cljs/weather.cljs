@@ -1,44 +1,44 @@
-(ns ^:figwheel-hooks learn-cljs.weather
+(ns ^:figwheel-hooks learn-cljs.weather                    ;; <1>
   (:require
    [goog.dom :as gdom]
-   [reagent.core :as reagent :refer [atom]]
-   [reagent.dom :as rdom]))
-
-(println "This text is printed from src/learn_cljs/weather.cljs. Go ahead and edit it and see reloading in action.")
-
-(defn multiply [a b] (* a b))
-
-;; define your app data so that it doesn't get over-written on reload
-(defonce app-state (atom {:text "Hello world!"}))
-
-(defn get-app-element []
-  (gdom/getElement "app"))
-
-(defonce cats-image "https://upload.wikimedia.org/wikipedia/commons/0/0b/Cat_poster_1.jpg")
+   [reagent.dom :as rdom]
+   [reagent.core :as r]))
 
 
-(defn hello-world []
-  [:div
-   [:h1 (:text @app-state)]
-   [:p "This is ClojureScript cats"]
-   [:img {:src cats-image 
-          :width 360}]])
+(defonce app-state (r/atom {:title "Whether Forecast"
+                            :postal-code ""
+                            :temperatures {:today {:label "Today"
+                                                   :value nil}
+                                           :tomorrow {:label "Tomorrow"
+                                                      :value nil}}}))
+(defn title [] 
+  [:h1 (:title @app-state)])
 
-(defn mount [el]
-  (rdom/render [hello-world] el))
+(defn temperature [temp] 
+  [:div {:class "temperature"}
+   [:div {:class "value"}
+    (:value temp)]
+   [:h2 (:label temp)]])
+
+(defn postal-code []
+  [:div {:class "postal-code"}
+   [:h3 "Enter your postal code"]
+   [:input {:type "text"
+            :placeholder "Postal Code"
+            :value (:postal-code @app-state)}]
+   [:button "Go"]])
+
+(defn app []
+  [:div {:class "app"}
+   [title]
+   [:div {:class "temperatures"}
+    (for [temp (vals (:temperatures @app-state))]
+      [temperature temp])]
+   [postal-code]])
 
 (defn mount-app-element []
-  (when-let [el (get-app-element)]
-    (mount el)))
-
-;; conditionally start your application based on the presence of an "app" element
-;; this is particularly helpful for testing this ns without launching the app
+  (rdom/render [app] (gdom/getElement "app")))
 (mount-app-element)
 
-;; specify reload hook with ^:after-load metadata
 (defn ^:after-load on-reload []
-  (mount-app-element)
-  ;; optionally touch your app-state to force rerendering depending on
-  ;; your application
-  ;; (swap! app-state update-in [:__figwheel_counter] inc)
-)
+  (mount-app-element))
