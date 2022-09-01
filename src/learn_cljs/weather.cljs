@@ -13,6 +13,7 @@
                                                       :value nil}}}))
 
 (def api-key "PAST_YOUR_API_KEY")
+(def openweather-api "http://api.openweathermap.org/data/2.5/forecast")
 
 (defn handle-response [resp]
   (let [today (get-in resp ["list" 0 "main" "temp"])
@@ -25,7 +26,7 @@
 
 (defn get-forecast! []
   (let [postal-code (:postal-code @app-state)]
-    (ajax/GET "http://api.openweathermap.org/data/2.5/forecast"
+    (ajax/GET openweather-api
       {:params {"q" postal-code
                 "units" "imperial"
                 "appid" api-key}
